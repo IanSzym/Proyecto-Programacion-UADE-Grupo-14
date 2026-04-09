@@ -26,4 +26,3 @@ Historial de pagos
 Interfaz (no visual)
 
 
-salchipapa 2
