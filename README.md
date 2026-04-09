@@ -24,3 +24,6 @@ Manejo de empleados
 Calculadora masa corporal
 Historial de pagos
 Interfaz (no visual)
+
+
+salchipapa
