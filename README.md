@@ -65,6 +65,5 @@ Para la entrega(40%), se incluiran las siguientes funcionalidades:
 -Login del administrador
 -Gestion de clientess(alta, baja, modificacion)
 -Gestion de empleados(tambien, alta y baja de empleaods)
--Calculadora de Masa Corporal(calculo y visualizacion)
 -Interfaz funcional
 Se eligieron estas funcionalidades porque son las mas basicas.Esto permite demostrar el funcionamiento inicial del sistema. (Especialmente la interfaz, login y gestiones)
