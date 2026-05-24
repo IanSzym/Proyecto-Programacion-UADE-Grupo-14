@@ -47,8 +47,8 @@ def calcular_proteinas(peso, objetivo):
     """
     Calcula gramos de proteína diaria recomendados según el objetivo.
     Factores basados en referencias generales de nutrición deportiva:
-      - Mantenimiento: 1.6 g/kg
-      - Volumen (ganar músculo): 2.0 g/kg
+     - Mantenimiento: 1.6 g/kg
+     - Volumen (ganar músculo): 2.0 g/kg
       - Definición (bajar grasa): 2.2 g/kg
       - Pérdida de peso: 1.2 g/kg
     """
@@ -101,4 +101,6 @@ def calculadora_corporal():
     print(f"Proteina diaria recomendada: {gramos} g")
     print("\nNota: Estos valores son orientativos. Consulta con un nutricionista")
     print("para un plan personalizado.")
-    
+
+if __name__ == "__main__":
+    calculadora_corporal()
