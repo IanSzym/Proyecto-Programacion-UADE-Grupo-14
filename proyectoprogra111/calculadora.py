@@ -70,11 +70,11 @@ def calculadora_corporal():
     print("CALCULADORA CORPORAL")
     print("=" * 40)
 
-    # --- Datos básicos ---
+    #  Datos básicos 
     peso = obtener_float("Peso en kg (ej: 70.5): ", minimo=20, maximo=300)
     altura = obtener_float("Altura en metros (ej: 1.75): ", minimo=0.5, maximo=2.5)
 
-    # --- IMC ---
+    #  IMC 
     imc = calcular_imc(peso, altura)
     categoria, descripcion = clasificar_imc(imc)
 
@@ -83,7 +83,7 @@ def calculadora_corporal():
     print(f"Categoria: {categoria}")
     print(f"{descripcion}")
 
-    # --- Objetivo del cliente ---
+    # Objetivo del cliente 
     print("\n--- OBJETIVO ---")
     print("1. Mantenimiento")
     print("2. Ganar musculo (volumen)")
@@ -92,7 +92,7 @@ def calculadora_corporal():
 
     objetivo = obtener_int("Seleccione su objetivo: ", opciones_validas={1, 2, 3, 4})
 
-    # --- Proteínas ---
+    #  Proteínas
     nombre_obj, factor, gramos = calcular_proteinas(peso, objetivo)
 
     print("\n--- RECOMENDACION DE PROTEINAS ---")
