@@ -67,3 +67,6 @@ Para la entrega(40%), se incluiran las siguientes funcionalidades:
 -Gestion de empleados(tambien, alta y baja de empleaods)
 -Interfaz funcional
 Se eligieron estas funcionalidades porque son las mas basicas.Esto permite demostrar el funcionamiento inicial del sistema. (Especialmente la interfaz, login y gestiones)
+
+
+PRUEBA
