@@ -69,4 +69,4 @@ Para la entrega(40%), se incluiran las siguientes funcionalidades:
 Se eligieron estas funcionalidades porque son las mas basicas.Esto permite demostrar el funcionamiento inicial del sistema. (Especialmente la interfaz, login y gestiones)
 
 
-PRUEBA
+PRUEBA 2
