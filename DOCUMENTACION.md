@@ -243,17 +243,6 @@ GESTION DE EMPLEADOS
 
 ---
 
-## Ejecución del Sistema
-
-### Requisitos
-- Python 3.x
-- Módulo `re` (incluido en Python estándar)
-
-### Comando de Ejecución
-```bash
-python main.py
-```
-
 ### Flujo de Uso
 1. **Inicio:** Ejecutar `main.py`
 2. **Autenticación:** Ingresar credenciales válidas
