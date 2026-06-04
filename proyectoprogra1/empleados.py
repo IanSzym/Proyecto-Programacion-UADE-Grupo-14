@@ -74,7 +74,12 @@ def modificar_empleado():
         print("\nNo hay empleados registrados.")
         return
     
-    id_empleado = int(input("\nID del empleado a modificar: "))
+    try:
+        id_empleado = int(input("\nID del empleado a modificar: "))
+    except ValueError:
+        print("ID invalido. Debe ingresar un numero.")
+        return
+
     empleado = buscar_empleado_id(id_empleado)
     
     if not empleado:
@@ -153,7 +158,12 @@ def baja_empleado():
         print("\nNo hay empleados registrados.")
         return
     
-    id_empleado = int(input("\nID del empleado a dar de baja: "))
+    try:
+        id_empleado = int(input("\nID del empleado a dar de baja: "))
+    except ValueError:
+        print("ID invalido. Debe ingresar un numero.")
+        return
+
     empleado = buscar_empleado_id(id_empleado)
     
     if not empleado:

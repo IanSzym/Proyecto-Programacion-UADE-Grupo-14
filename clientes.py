@@ -70,7 +70,12 @@ def modificar_cliente():
         print("\nNo hay clientes registrados.")
         return
     
-    id_cliente = int(input("\nID del cliente a modificar: "))
+    try:
+        id_cliente = int(input("\nID del cliente a modificar: "))
+    except ValueError:
+        print("ID invalido. Debe ingresar un numero.")
+        return
+
     cliente = buscar_cliente_id(id_cliente)
     
     if not cliente:
@@ -142,7 +147,12 @@ def baja_cliente():
         print("\nNo hay clientes registrados.")
         return
     
-    id_cliente = int(input("\nID del cliente a dar de baja: "))
+    try:
+        id_cliente = int(input("\nID del cliente a dar de baja: "))
+    except ValueError:
+        print("ID invalido. Debe ingresar un numero.")
+        return
+
     cliente = buscar_cliente_id(id_cliente)
     
     if not cliente:
