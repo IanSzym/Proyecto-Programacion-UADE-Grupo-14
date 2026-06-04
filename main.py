@@ -3,6 +3,7 @@
 from login import iniciar_sesion
 from clientes import crear_cliente, listar_clientes, modificar_cliente, baja_cliente, buscar_clientes
 from empleados import crear_empleado, listar_empleados, modificar_empleado, baja_empleado, buscar_empleados
+from calculadora import calculadora_corporal
 
 
 def menu_clientes():
@@ -75,6 +76,7 @@ def menu_principal():
         print("=" * 40)
         print("1. Gestion de Clientes")
         print("2. Gestion de Empleados")
+        print("3. Calculadora corporal")
         print("0. Salir")
         
         opcion = input("\nOpcion: ")
@@ -83,6 +85,8 @@ def menu_principal():
             menu_clientes()
         elif opcion == "2":
             menu_empleados()
+        elif opcion == "3":
+            calculadora_corporal()
         elif opcion == "0":
             print("\nSaliendo del sistema...")
             return  
