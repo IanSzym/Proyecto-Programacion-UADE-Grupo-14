@@ -5,6 +5,7 @@ from clientes import crear_cliente, listar_clientes, modificar_cliente, baja_cli
 from empleados import crear_empleado, listar_empleados, modificar_empleado, baja_empleado, buscar_empleados
 from calculadora import calculadora_corporal
 from productos import crear_producto, listar_productos, modificar_producto, baja_producto, buscar_productos
+from promociones import crear_promocion, listar_promociones, modificar_promocion, baja_promocion, buscar_promociones
 
 
 def menu_clientes():
@@ -100,6 +101,37 @@ def menu_productos():
             print("Opcion invalida.")
 
 
+def menu_promociones():
+    opcion = ""
+    while opcion != "0":
+        print("\n" + "=" * 40)
+        print("GESTION DE PROMOCIONES")
+        print("=" * 40)
+        print("1. Alta de promocion")
+        print("2. Listar promociones activas")
+        print("3. Buscar promocion")
+        print("4. Modificar promocion")
+        print("5. Baja de promocion")
+        print("0. Volver al menu principal")
+
+        opcion = input("\nOpcion: ")
+
+        if opcion == "1":
+            crear_promocion()
+        elif opcion == "2":
+            listar_promociones()
+        elif opcion == "3":
+            buscar_promociones()
+        elif opcion == "4":
+            modificar_promocion()
+        elif opcion == "5":
+            baja_promocion()
+        elif opcion == "0":
+            return
+        else:
+            print("Opcion invalida.")
+
+
 def menu_principal():
     opcion = ""
     while opcion != "0":
@@ -109,7 +141,8 @@ def menu_principal():
         print("1. Gestion de Clientes")
         print("2. Gestion de Empleados")
         print("3. Gestion de Productos")
-        print("4. Calculadora corporal")
+        print("4. Gestion de Promociones")
+        print("5. Calculadora corporal")
         print("0. Salir")
         
         opcion = input("\nOpcion: ")
@@ -121,6 +154,8 @@ def menu_principal():
         elif opcion == "3":
             menu_productos()
         elif opcion == "4":
+            menu_promociones()
+        elif opcion == "5":
             calculadora_corporal()
         elif opcion == "0":
             print("\nSaliendo del sistema...")
