@@ -1,72 +1,70 @@
 # Proyecto Programacion UADE Grupo 14
-Proyecto de programacion :D
 
-Reach
+Sistema de gestion por consola hecho para Programacion 1.
 
+El codigo oficial esta dentro de la carpeta `proyectoprogra1`.
 
-Integrantes:
+## Integrantes
 
-PITA CARRANZA IGNACIO
-SZYMKOWICKZ IAN LUKA
-ROSENTAL MATIAS
-GARCIA LUCAS
+- Ignacio Pita Carranza
+- Ian Luka Szymkowickz
+- Matias Rosental
+- Lucas Garcia
 
-Objetivo:
-Desarrollar un sistema integral para gestionar clientes, servicios y operaciones internas, como control de empleados y gestion de productos. El sistema busca facilitar la administracion del negocio con una interfaz funcional y estructurada. 
-* El sistema está orientado al uso interno por parte de un administrador, quien se encarga de cargar, gestionar y consultar la información de los clientes. * #importante revisar
+## Como Ejecutar
 
+```bash
+cd proyectoprogra1
+python main.py
+```
 
+## Funcionalidades
 
-Funcionalidades:
+- Login de administrador.
+- Gestion de clientes.
+- Gestion de empleados.
+- Gestion de productos.
+- Gestion de promociones.
+- Calculadora corporal.
+- Guardado de datos en archivos JSON.
 
-Login
--Inicio de sesion (con validacion de credenciales)
+## Estructura
 
-Gestion de clientes
--Alta de clientes
--Baja de clientes
--Modificacion y visualizacion de datos del cliente
+```text
+proyectoprogra1/
+├── main.py
+├── login.py
+├── clientes.py
+├── empleados.py
+├── productos.py
+├── promociones.py
+├── calculadora.py
+├── valids.py
+├── persistencia.py
+└── data/
+    ├── usuarios.json
+    ├── clientes.json
+    ├── empleados.json
+    ├── productos.json
+    └── promociones.json
+```
 
-Gestion de Promociones
--Creacion de promociones
--Aplicacion(o modificacion) de descuentos
--Visualizacion de promociones vigentes
--Asociacion de promociones segun condiciones (por ejemplo, IMC del cliente)
+## Usuarios Iniciales
 
-Gestion de Productos
--Registro de productos
--Control de stock
--Venta de productos a clientes
+```text
+admin   - admin123
+ignacio - pita123
+ian     - ian123
+matias  - rosental123
+lucas   - garcia123
+```
 
-Gestion de Empleados (similar a clientes)
--Alta de empleados
--Baja de empleados
--Modificacion y visualizacion de datos
+## Guardado de Datos
 
-Calculadora de Masa Corporal
--Ingreso de datos fisicos del cliente
--Calculo automatico del indice de masa corporal(IMC)
--Visualizacion y registro de resultados
--Posible asociacion automatica de promociones segun el resultado
+Los datos se guardan en archivos JSON dentro de `proyectoprogra1/data`.
 
-Historial de Pagos
--Registro de pagos realizados
--Registro de pagos pendientes
--Consulta de historial por cliente
+Esto permite que clientes, empleados, productos, promociones y usuarios sigan disponibles despues de cerrar el programa.
 
-Interfaz del Sistema
--Interfaz funcional (no enfocada en diseño visual).
--Navegacion entre modulos.
+## Backup
 
-
-
-
-Para la entrega(40%), se incluiran las siguientes funcionalidades:
--Login del administrador
--Gestion de clientess(alta, baja, modificacion)
--Gestion de empleados(tambien, alta y baja de empleaods)
--Interfaz funcional
-Se eligieron estas funcionalidades porque son las mas basicas.Esto permite demostrar el funcionamiento inicial del sistema. (Especialmente la interfaz, login y gestiones)
-
-
-PRUEBA 2
+La carpeta `version anterior` guarda una copia del proyecto antes de la reorganizacion.

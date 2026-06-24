@@ -1,9 +1,14 @@
 # empleados.py
 
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
+from persistencia import cargar_datos, guardar_datos
 
 # Lista de diccionarios para guardar empleados
-empleados = []
+empleados = cargar_datos("empleados.json", [])
+
+
+def guardar_empleados():
+    guardar_datos("empleados.json", empleados)
 
 
 def crear_empleado():
@@ -44,6 +49,7 @@ def crear_empleado():
     empleado["activo"] = True
     
     empleados.append(empleado)
+    guardar_empleados()
     print(f"\n Empleado {empleado['nombre']} {empleado['apellido']} registrado. ID: {empleado['id']}")
 
 
@@ -145,6 +151,7 @@ def modificar_empleado():
                 print("Cargo actualizado.")
                 
         elif opcion == "0":
+            guardar_empleados()
             print("Cambios guardados.")
             return
             
@@ -170,6 +177,7 @@ def baja_empleado():
         print("Empleado no encontrado.")
     else:
         empleado["activo"] = False
+        guardar_empleados()
         print(f"Empleado {empleado['nombre']} {empleado['apellido']} dado de baja.")
 
 

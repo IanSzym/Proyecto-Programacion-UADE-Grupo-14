@@ -1,9 +1,14 @@
 # clientes.py
 
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
+from persistencia import cargar_datos, guardar_datos
 
 # Lista de diccionarios para guardar clientes 
-clientes = []
+clientes = cargar_datos("clientes.json", [])
+
+
+def guardar_clientes():
+    guardar_datos("clientes.json", clientes)
 
 
 def crear_cliente():
@@ -41,6 +46,7 @@ def crear_cliente():
     cliente["activo"] = True
     
     clientes.append(cliente)
+    guardar_clientes()
     print(f"\n Cliente {cliente['nombre']} {cliente['apellido']} registrado. ID: {cliente['id']}")
 
 
@@ -135,6 +141,7 @@ def modificar_cliente():
                 print("Telefono actualizado.")
                 
         elif opcion == "0":
+            guardar_clientes()
             print("Cambios guardados.")
             return
             
@@ -160,6 +167,7 @@ def baja_cliente():
         print("Cliente no encontrado.")
     else:
         cliente["activo"] = False
+        guardar_clientes()
         print(f"Cliente {cliente['nombre']} {cliente['apellido']} dado de baja.")
 
 

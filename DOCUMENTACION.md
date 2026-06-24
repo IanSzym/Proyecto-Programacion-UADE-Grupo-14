@@ -1,310 +1,332 @@
-# NUESTRO PROYECTO DE PROGRAMACIÓN - GRUPO 14
+# NUESTRO PROYECTO DE PROGRAMACION - GRUPO 14
 
-## Quiénes Somos
+## Quienes Somos
 
-**Grupo:** 14 (somos 4 estudiantes de primer año)
+**Grupo:** 14
 
-**Los integrantes:**
+**Integrantes:**
 - Ignacio Pita Carranza
-- Ian Luka Szymkowickz  
-- Matías Rosental
-- Lucas García
+- Ian Luka Szymkowickz
+- Matias Rosental
+- Lucas Garcia
 
-## Qué Quisimos Hacer
+## Objetivo del Proyecto
 
-Básicamente queríamos hacer un programa que sirva para manejar clientes y empleados de una empresa. Es como una agenda digital pero más completa. La idea es que un administrador pueda cargar datos, buscar personas, modificar información y esas cosas que necesita cualquier negocio.
+El objetivo del programa es crear un sistema de gestion para uso interno. El sistema permite iniciar sesion, administrar clientes, empleados, productos y promociones, y usar una calculadora corporal.
 
----
+Los datos se guardan en archivos JSON para que no se pierdan cuando se cierra el programa.
 
-## Cómo Organizamos el Código
+## Estructura del Proyecto
 
-Dividimos todo en varios archivos para no hacer un desastre:
+El codigo oficial esta dentro de la carpeta `proyectoprogra1`.
 
-```
-Nuestro Proyecto
-├── main.py          # El archivo principal que ejecutás
-├── login.py         # Para que no entre cualquiera al sistema
-├── clientes.py      # Todo lo relacionado con clientes
-├── empleados.py     # Todo lo relacionado con empleados
-├── valids.py        # Para verificar que los datos estén bien
-├── README.md        # Info básica del proyecto
-└── DOCUMENTACION.md # Este archivo que estás leyendo
-```
-
----
-
-## El Login (login.py)
-
-### Para Qué Sirve
-Es para que no cualquiera pueda usar nuestro programa. Funciona como cuando te logueas en Instagram o cualquier app.
-
-### Usuarios y Contraseñas que Funcionan
-```
-Usuario       | Contraseña
-------------- | -----------
-admin         | admin123
-ignacio       | pita123
-ian           | ian123
-matias        | rosental123
-lucas         | garcia123
+```text
+Proyecto Programacion UADE Grupo 14
+├── README.md
+├── DOCUMENTACION.md
+├── .gitignore
+├── version anterior
+└── proyectoprogra1
+    ├── main.py
+    ├── login.py
+    ├── clientes.py
+    ├── empleados.py
+    ├── productos.py
+    ├── promociones.py
+    ├── calculadora.py
+    ├── valids.py
+    ├── persistencia.py
+    └── data
+        ├── usuarios.json
+        ├── clientes.json
+        ├── empleados.json
+        ├── productos.json
+        └── promociones.json
 ```
 
-### Las Funciones Que Hicimos
+## Como Ejecutar el Programa
 
-#### `login(usuario, password)`
-Esta función básicamente chequea si el usuario y la contraseña que pusiste existen en nuestra "base de datos" (que en realidad es solo un diccionario). Si están bien, te deja entrar. Si no, te dice que está mal.
+Desde la terminal:
 
-#### `iniciar_sesion()`
-Esta es la función principal del login. Te pide usuario y contraseña, y si te equivocás te deja intentar otra vez. Si ponés "-1" como usuario, el programa se cierra. Es bastante simple pero funciona.
-
----
-
-## Las Validaciones (valids.py)
-
-### Para Qué Sirven
-Estas funciones verifican que los datos que ingresa el usuario estén bien. Porque si alguien pone "asdasd" como DNI, obviamente está mal.
-
-#### `validar_dni(dni)`
-Chequea que el DNI tenga exactamente 8 números. Nada más, nada menos. Si ponés letras o menos números, te dice que está mal.
-- **Ejemplo que funciona:** "12345678"
-- **Ejemplo que NO funciona:** "1234567A" o "123"
-
-#### `validar_telefono(telefono)`
-Verifica que el teléfono tenga formato argentino. Puede tener guiones, espacios o estar todo junto.
-- **Ejemplos que funcionan:** 
-  - "011-1234-5678"
-  - "011 1234 5678" 
-  - "01112345678"
-
-#### `validar_email(email)`
-Se fija que el email tenga arroba (@) y punto, básicamente que parezca un email real.
-- **Ejemplo que funciona:** "usuario@dominio.com"
-
-#### `formatear_nombre(nombre)`
-Esta función toma cualquier nombre y lo pone con la primera letra en mayúscula. Es para que todo quede prolijo.
-- **Ejemplo:** si escribís "JUAN PÉREZ" te lo convierte en "Juan Pérez"
-
----
-
-## Gestión de Clientes (clientes.py)
-
-### Estructura de Datos
-Los clientes se almacenan en una lista de diccionarios con la siguiente estructura:
-```python
-cliente = {
-    "id": 1,                    # ID autogenerado
-    "nombre": "Juan",           # Nombre formateado
-    "apellido": "Pérez",        # Apellido formateado
-    "dni": "12345678",          # DNI validado
-    "email": "juan@email.com",  # Email validado en minúsculas
-    "telefono": "11 1234 5678", # Teléfono validado
-    "activo": True              # Estado del cliente
-}
+```bash
+cd proyectoprogra1
+python main.py
 ```
 
-### Funciones Principales
+## Archivos Principales
 
-#### `crear_cliente()`
-- **Propósito:** Registrar nuevos clientes
-- **Proceso:**
-  1. Asigna ID automático (length + 1)
-  2. Solicita y valida cada campo
-  3. Formatea nombres y apellidos
-  4. Valida DNI, email y teléfono
-  5. Marca como activo por defecto
-  6. Confirma registro
+### `main.py`
 
-#### `buscar_cliente_id(id_cliente)`
-- **Propósito:** Buscar cliente por ID específico
-- **Parámetros:** `id_cliente` (int)
-- **Retorna:** Diccionario del cliente o `False` si no existe
+Es el archivo principal del sistema. Muestra el menu general y permite entrar a cada modulo.
 
-#### `listar_clientes()`
-- **Propósito:** Mostrar todos los clientes activos
-- **Implementación:** Usa `filter()` con lambda para obtener solo activos
-- **Formato:** Muestra ID, nombre completo, DNI y teléfono
+Menu principal:
 
-#### `modificar_cliente()`
-- **Propósito:** Actualizar datos de cliente existente
-- **Características:**
-  - Permite reactivar clientes inactivos
-  - Menú interactivo para seleccionar campo a modificar
-  - Valida nuevos datos antes de guardar
-  - Permite cancelar sin cambios
-
-#### `baja_cliente()`
-- **Propósito:** Dar de baja cliente (soft delete)
-- **Funcionamiento:** Marca `activo = False` sin eliminar el registro
-
-#### `buscar_clientes()`
-- **Propósito:** Buscar clientes por término parcial
-- **Campos de búsqueda:** Nombre, apellido o DNI
-- **Características:**
-  - Búsqueda insensible a mayúsculas/minúsculas
-  - Muestra múltiples resultados
-  - Indica estado (activo/inactivo)
-
----
-
-## Gestión de Empleados (empleados.py)
-
-### Estructura de Datos
-Similar a clientes pero incluye campo adicional:
-```python
-empleado = {
-    "id": 1,                      # ID autogenerado
-    "nombre": "María",            # Nombre formateado
-    "apellido": "García",         # Apellido formateado
-    "dni": "87654321",            # DNI validado y único
-    "email": "maria@empresa.com", # Email validado
-    "telefono": "11 9876 5432",   # Teléfono validado
-    "cargo": "Gerente",           # Cargo del empleado
-    "activo": True                # Estado del empleado
-}
-```
-
-### Funciones Principales
-
-#### `crear_empleado()`
-- **Diferencias con clientes:**
-  - Validación de DNI único entre empleados
-  - Campo cargo obligatorio
-  - Validaciones adicionales de campos no vacíos
-
-#### `buscar_empleado_id(id_empleado)`
-- **Igual funcionamiento que en clientes**
-
-#### `listar_empleados()`
-- **Formato:** ID, nombre completo, cargo y teléfono
-
-#### `modificar_empleado()`
-- **Incluye opción adicional:** Modificar cargo
-- **Misma lógica de reactivación que clientes**
-
-#### `baja_empleado()`
-- **Igual funcionamiento que baja de clientes**
-
-#### `buscar_empleados()`
-- **Igual lógica que búsqueda de clientes**
-- **Muestra cargo en los resultados**
-
----
-
-## Sistema Principal (main.py)
-
-### Flujo del Sistema
-
-#### Inicialización
-```python
-if iniciar_sesion():    # Si el login es exitoso
-    menu_principal()    # Muestra el menú principal
-```
-
-### Estructura de Menús
-
-#### `menu_principal()`
-```
-SISTEMA DE GESTION - GRUPO 14
-=============================
+```text
 1. Gestion de Clientes
-2. Gestion de Empleados  
+2. Gestion de Empleados
+3. Gestion de Productos
+4. Gestion de Promociones
+5. Calculadora corporal
 0. Salir
 ```
 
-#### `menu_clientes()`
-```
-GESTION DE CLIENTES
-===================
-1. Alta de cliente
-2. Listar clientes activos
-3. Buscar cliente
-4. Modificar cliente
-5. Baja de cliente
-0. Volver al menu principal
+### `login.py`
+
+Maneja el inicio de sesion.
+
+Los usuarios se cargan desde:
+
+```text
+proyectoprogra1/data/usuarios.json
 ```
 
-#### `menu_empleados()`
-```
-GESTION DE EMPLEADOS
-====================
-1. Alta de empleado
-2. Listar empleados activos
-3. Buscar empleado
-4. Modificar empleado
-5. Baja de empleado
-0. Volver al menu principal
+Usuarios iniciales:
+
+```text
+admin   - admin123
+ignacio - pita123
+ian     - ian123
+matias  - rosental123
+lucas   - garcia123
 ```
 
-### Características de la Navegación
-- **Bucles persistentes:** Los menús permanecen activos hasta que el usuario seleccione "0"
-- **Validación de opciones:** Muestra "Opción inválida" para entradas incorrectas
-- **Navegación jerárquica:** Regreso automático al menú superior
-- **Importaciones modulares:** Cada funcionalidad se importa de su módulo correspondiente
+Funciones:
+- `login(usuario, password)`: revisa si el usuario y la contrasena son correctos.
+- `iniciar_sesion()`: pide usuario y contrasena por consola.
 
----
+### `persistencia.py`
 
-### Flujo de Uso
-1. **Inicio:** Ejecutar `main.py`
-2. **Autenticación:** Ingresar credenciales válidas
-3. **Navegación:** Usar menús para acceder a funcionalidades
-4. **Operaciones:** Realizar altas, bajas, modificaciones y búsquedas
-5. **Salida:** Seleccionar opción "0" para salir
+Este archivo se encarga de leer y guardar datos en JSON.
 
----
+Funciones:
+- `obtener_ruta(nombre_archivo)`: arma la ruta del archivo dentro de `data`.
+- `cargar_datos(nombre_archivo, datos_iniciales)`: lee un JSON. Si no existe, lo crea.
+- `guardar_datos(nombre_archivo, datos)`: guarda los datos en un JSON.
 
-## Consideraciones Técnicas
+Esta parte permite que clientes, empleados, productos, promociones y usuarios queden guardados.
 
-### Almacenamiento
-- **Tipo:** Listas en memoria (no persistente)
-- **Vida útil:** Los datos se pierden al cerrar el programa
-- **Escalabilidad:** Limitada por memoria RAM
+### `valids.py`
 
-### Validaciones
-- **DNI:** Formato argentino estándar (8 dígitos)
-- **Teléfono:** Formato flexible con separadores opcionales
-- **Email:** Formato estándar internacional
-- **Nombres:** Formateo automático a Title Case
+Contiene funciones para validar datos ingresados por el usuario.
 
-### Gestión de Estados
-- **Soft Delete:** Los registros no se eliminan físicamente
-- **Reactivación:** Posibilidad de restaurar registros inactivos
-- **Integridad:** IDs únicos y autogenerados
+Funciones:
+- `validar_dni(dni)`: verifica que el DNI tenga 8 numeros.
+- `validar_telefono(telefono)`: verifica un formato de telefono valido.
+- `validar_email(email)`: verifica que el email tenga un formato correcto.
+- `formatear_nombre(nombre)`: convierte nombres a formato titulo.
 
-### Limitaciones Actuales
-- **Persistencia:** No hay guardado en base de datos o archivos
-- **Concurrencia:** No soporta múltiples usuarios simultáneos
-- **Backup:** No hay sistema de respaldo automático
-- **Logs:** No hay registro de actividades del sistema
+## Gestion de Clientes
 
----
+Archivo:
 
-## Funcionalidades Implementadas para Entrega (40%)
+```text
+proyectoprogra1/clientes.py
+```
 
-### Completadas
-- [x] **Login del administrador** - Sistema de autenticación funcional
-- [x] **Gestión de clientes** - Alta, baja y modificación completas  
-- [x] **Gestión de empleados** - Alta, baja y modificación completas
-- [x] **Interfaz funcional** - Menús navegables y operativos
+JSON usado:
 
-### Funcionalidades Planificadas (Futuras)
-- [ ] Gestión de Promociones
-- [ ] Gestión de Productos  
-- [ ] Calculadora de Masa Corporal
-- [ ] Historial de Pagos
-- [ ] Persistencia de datos
-- [ ] Reportes y estadísticas
+```text
+proyectoprogra1/data/clientes.json
+```
 
----
+Estructura de un cliente:
 
-## Información de Contacto
+```python
+cliente = {
+    "id": 1,
+    "nombre": "Juan",
+    "apellido": "Perez",
+    "dni": "12345678",
+    "email": "juan@email.com",
+    "telefono": "11 1234 5678",
+    "activo": True
+}
+```
 
-Para dudas o consultas sobre el sistema, contactar a cualquier integrante del **Grupo 14**:
-- Ignacio Pita Carranza
-- Ian Luka Szymkowickz  
-- Matías Rosental
-- Lucas García
+Funciones principales:
+- `crear_cliente()`: registra un cliente nuevo.
+- `buscar_cliente_id(id_cliente)`: busca un cliente por ID.
+- `listar_clientes()`: muestra clientes activos.
+- `modificar_cliente()`: permite modificar nombre, apellido, email o telefono.
+- `baja_cliente()`: marca un cliente como inactivo.
+- `buscar_clientes()`: busca por nombre, apellido o DNI.
 
----
+## Gestion de Empleados
 
-*Documentación actualizada al 20 de abril de 2026*  
-*Sistema de Gestión - UADE Grupo 14*
+Archivo:
+
+```text
+proyectoprogra1/empleados.py
+```
+
+JSON usado:
+
+```text
+proyectoprogra1/data/empleados.json
+```
+
+Estructura de un empleado:
+
+```python
+empleado = {
+    "id": 1,
+    "nombre": "Maria",
+    "apellido": "Garcia",
+    "dni": "87654321",
+    "email": "maria@empresa.com",
+    "telefono": "11 9876 5432",
+    "cargo": "Gerente",
+    "activo": True
+}
+```
+
+Funciones principales:
+- `crear_empleado()`: registra un empleado nuevo.
+- `buscar_empleado_id(id_empleado)`: busca un empleado por ID.
+- `listar_empleados()`: muestra empleados activos.
+- `modificar_empleado()`: permite modificar datos del empleado.
+- `baja_empleado()`: marca un empleado como inactivo.
+- `buscar_empleados()`: busca por nombre, apellido o DNI.
+
+## Gestion de Productos
+
+Archivo:
+
+```text
+proyectoprogra1/productos.py
+```
+
+JSON usado:
+
+```text
+proyectoprogra1/data/productos.json
+```
+
+Estructura de un producto:
+
+```python
+producto = {
+    "id": 1,
+    "nombre": "Proteina",
+    "precio": 10000.0,
+    "stock": 15,
+    "activo": True
+}
+```
+
+Funciones principales:
+- `crear_producto()`: registra un producto nuevo.
+- `buscar_producto_id(id_producto)`: busca un producto por ID.
+- `listar_productos()`: muestra productos activos.
+- `modificar_producto()`: permite modificar nombre, precio o stock.
+- `baja_producto()`: marca un producto como inactivo.
+- `buscar_productos()`: busca productos por nombre.
+
+## Gestion de Promociones
+
+Archivo:
+
+```text
+proyectoprogra1/promociones.py
+```
+
+JSON usado:
+
+```text
+proyectoprogra1/data/promociones.json
+```
+
+Estructura de una promocion:
+
+```python
+promocion = {
+    "id": 1,
+    "nombre": "Promo Verano",
+    "descuento": 20.0,
+    "activa": True
+}
+```
+
+Funciones principales:
+- `crear_promocion()`: registra una promocion nueva.
+- `buscar_promocion_id(id_promocion)`: busca una promocion por ID.
+- `listar_promociones()`: muestra promociones activas.
+- `modificar_promocion()`: permite modificar nombre y descuento.
+- `baja_promocion()`: marca una promocion como inactiva.
+- `buscar_promociones()`: busca promociones por nombre.
+
+## Calculadora Corporal
+
+Archivo:
+
+```text
+proyectoprogra1/calculadora.py
+```
+
+La calculadora pide peso, altura y objetivo. Luego muestra:
+- IMC.
+- Categoria del IMC.
+- Recomendacion diaria de proteinas.
+
+Funciones principales:
+- `obtener_float(mensaje, minimo, maximo)`: pide un numero decimal con rango valido.
+- `obtener_int(mensaje, opciones_validas)`: pide una opcion numerica.
+- `calcular_imc(peso, altura)`: calcula el indice de masa corporal.
+- `clasificar_imc(imc)`: devuelve la categoria del IMC.
+- `calcular_proteinas(peso, objetivo)`: calcula los gramos recomendados.
+- `calculadora_corporal()`: ejecuta toda la calculadora.
+
+## Guardado de Datos
+
+El sistema usa archivos JSON dentro de:
+
+```text
+proyectoprogra1/data
+```
+
+Cada modulo carga sus datos al iniciar:
+- `clientes.py` carga `clientes.json`.
+- `empleados.py` carga `empleados.json`.
+- `productos.py` carga `productos.json`.
+- `promociones.py` carga `promociones.json`.
+- `login.py` carga `usuarios.json`.
+
+Cuando se crea, modifica o da de baja un registro, el archivo JSON correspondiente se actualiza.
+
+## Estado de los Registros
+
+El sistema no elimina clientes, empleados, productos ni promociones de forma definitiva.
+
+En lugar de borrar registros:
+- Clientes, empleados y productos usan `"activo": True` o `"activo": False`.
+- Promociones usan `"activa": True` o `"activa": False`.
+
+Esto permite conservar el historial dentro del archivo JSON.
+
+## Backup
+
+La carpeta `version anterior` contiene una copia del proyecto antes de reorganizar la estructura.
+
+Esa carpeta sirve como respaldo. El codigo oficial actual esta en `proyectoprogra1`.
+
+## Funcionalidades Implementadas
+
+- Login de administrador.
+- Gestion de clientes.
+- Gestion de empleados.
+- Gestion de productos.
+- Gestion de promociones.
+- Calculadora corporal.
+- Persistencia de datos con JSON.
+- Menus por consola.
+- Validaciones basicas de datos.
+
+## Funcionalidades Pendientes o Posibles Mejoras
+
+- Historial de pagos.
+- Venta de productos a clientes.
+- Asociar promociones automaticamente segun condiciones.
+- Reportes o estadisticas.
+- Mejorar seguridad de contrasenas.
+- Validar que no se repitan DNI o emails.
+

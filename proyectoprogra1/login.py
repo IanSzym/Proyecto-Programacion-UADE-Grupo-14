@@ -1,11 +1,17 @@
 
-CREDENCIALES = {
+from persistencia import cargar_datos
+
+
+usuarios_iniciales = {
     "admin": "admin123",
     "ignacio": "pita123",
     "ian": "ian123",
     "matias": "rosental123",
     "lucas": "garcia123"
 }
+
+CREDENCIALES = cargar_datos("usuarios.json", usuarios_iniciales)
+
 
 def login(usuario, password):
     #Valida usuario y contraseña.
