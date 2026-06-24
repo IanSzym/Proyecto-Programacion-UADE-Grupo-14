@@ -1,20 +1,18 @@
-# clientes.py
-
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
 from persistencia import cargar_datos, guardar_datos
+from colores import aviso, correcto, error, titulo
 
-# Lista de diccionarios para guardar clientes 
+# Cargamos la lista desde json y si no hay datos arranca vacia
 clientes = cargar_datos("clientes.json", [])
 
 
 def guardar_clientes():
+    # Guardamos cada vez que cambia la lista para no perder los datos
     guardar_datos("clientes.json", clientes)
 
 
 def crear_cliente():
-    #Alta de cliente
-
-    print("\n--- ALTA DE CLIENTE ---")
+    print(titulo("\n--- ALTA DE CLIENTE ---"))
     
     cliente = {}
     cliente["id"] = len(clientes) + 1
@@ -26,20 +24,21 @@ def crear_cliente():
     cliente["apellido"] = formatear_nombre(apellido)
     
     dni = input("DNI (8 digitos): ")
+    # Validamos con while para que no avance hasta que este bien escrito
     while not validar_dni(dni):
-        print("DNI invalido. Debe tener 8 digitos.")
+        print(error("DNI invalido. Debe tener 8 digitos."))
         dni = input("DNI (8 digitos): ")
     cliente["dni"] = dni
     
     email = input("Email: ")
     while not validar_email(email):
-        print("Email invalido.")
+        print(error("Email invalido."))
         email = input("Email: ")
     cliente["email"] = email.lower()
     
     telefono = input("Telefono (ej: 11 1234 5678): ")
     while not validar_telefono(telefono):
-        print("Telefono invalido.")
+        print(error("Telefono invalido."))
         telefono = input("Telefono (ej: 11 1234 5678): ")
     cliente["telefono"] = telefono
     
@@ -47,11 +46,11 @@ def crear_cliente():
     
     clientes.append(cliente)
     guardar_clientes()
-    print(f"\n Cliente {cliente['nombre']} {cliente['apellido']} registrado. ID: {cliente['id']}")
+    print(correcto(f"\n Cliente {cliente['nombre']} {cliente['apellido']} registrado. ID: {cliente['id']}"))
 
 
 def buscar_cliente_id(id_cliente):
-    #Busca un cliente por su ID usando un bucle for 
+    # Recorremos la lista y devolvemos el cliente que tenga ese id
     for cliente in clientes:
         if cliente["id"] == id_cliente:
             return cliente
@@ -59,49 +58,48 @@ def buscar_cliente_id(id_cliente):
 
 
 def listar_clientes():
-    #Lista todos los clientes activos
-    # Filter con lambda para obtener solo activos
+    # Filtramos solo los clientes que siguen activos
     activos = list(filter(lambda c: c["activo"], clientes))
     
     if len(activos) == 0:
-        print("\nNo hay clientes activos.")
+        print(aviso("\nNo hay clientes activos."))
         return
     
-    print("\n--- CLIENTES ACTIVOS ---")
+    print(titulo("\n--- CLIENTES ACTIVOS ---"))
     for cliente in activos:
         print(f"ID: {cliente['id']} | {cliente['nombre']} {cliente['apellido']} | DNI: {cliente['dni']} | Tel: {cliente['telefono']}")
 
 
 def modificar_cliente():
     if len(clientes) == 0:
-        print("\nNo hay clientes registrados.")
+        print(aviso("\nNo hay clientes registrados."))
         return
     
     try:
         id_cliente = int(input("\nID del cliente a modificar: "))
     except ValueError:
-        print("ID invalido. Debe ingresar un numero.")
+        print(error("ID invalido. Debe ingresar un numero."))
         return
 
     cliente = buscar_cliente_id(id_cliente)
     
     if not cliente:
-        print("Cliente no encontrado.")
+        print(error("Cliente no encontrado."))
         return
     
-    # Verificar si este inactivo y preguntar si quiere reactivar
+    # Si esta inactivo preguntamos si lo quiere reactivar
     if not cliente["activo"]:
-        print(f"\nEl cliente {cliente['nombre']} {cliente['apellido']} esta INACTIVO.")
+        print(aviso(f"\nEl cliente {cliente['nombre']} {cliente['apellido']} esta INACTIVO."))
         respuesta = input("Desea reactivarlo para modificarlo? (s/n): ").lower()
         if respuesta == "s":
             cliente["activo"] = True
-            print("Cliente reactivado.")
+            print(correcto("Cliente reactivado."))
         else:
-            print("No se puede modificar un cliente inactivo.")
+            print(aviso("No se puede modificar un cliente inactivo."))
             return
         
     while True:
-        print(f"\n--- MODIFICANDO: {cliente['nombre']} {cliente['apellido']} ---")
+        print(titulo(f"\n--- MODIFICANDO: {cliente['nombre']} {cliente['apellido']} ---"))
         print("1. Modificar nombre")
         print("2. Modificar apellido")
         print("3. Modificar email")
@@ -114,67 +112,67 @@ def modificar_cliente():
             nuevo = input(f"Nuevo nombre [{cliente['nombre']}]: ")
             if nuevo != "":
                 cliente["nombre"] = formatear_nombre(nuevo)
-                print("Nombre actualizado.")
+                print(correcto("Nombre actualizado."))
                 
         elif opcion == "2":
             nuevo = input(f"Nuevo apellido [{cliente['apellido']}]: ")
             if nuevo != "":
                 cliente["apellido"] = formatear_nombre(nuevo)
-                print("Apellido actualizado.")
+                print(correcto("Apellido actualizado."))
                 
         elif opcion == "3":
             nuevo = input(f"Nuevo email [{cliente['email']}]: ")
             if nuevo != "":
                 while not validar_email(nuevo):
-                    print("Email invalido.")
+                    print(error("Email invalido."))
                     nuevo = input(f"Nuevo email [{cliente['email']}]: ")
                 cliente["email"] = nuevo.lower()
-                print("Email actualizado.")
+                print(correcto("Email actualizado."))
                 
         elif opcion == "4":
             nuevo = input(f"Nuevo telefono [{cliente['telefono']}]: ")
             if nuevo != "":
                 while not validar_telefono(nuevo):
-                    print("Telefono invalido.")
+                    print(error("Telefono invalido."))
                     nuevo = input(f"Nuevo telefono [{cliente['telefono']}]: ")
                 cliente["telefono"] = nuevo
-                print("Telefono actualizado.")
+                print(correcto("Telefono actualizado."))
                 
         elif opcion == "0":
             guardar_clientes()
-            print("Cambios guardados.")
+            print(correcto("Cambios guardados."))
             return
             
         else:
-            print("Opcion invalida.")
+            print(error("Opcion invalida."))
 
 
 def baja_cliente():
-    #Baja de cliente (no se elimina, se marca como inactivo)
+    # No borramos el registro solo lo marcamos como inactivo
     if len(clientes) == 0:
-        print("\nNo hay clientes registrados.")
+        print(aviso("\nNo hay clientes registrados."))
         return
     
     try:
         id_cliente = int(input("\nID del cliente a dar de baja: "))
     except ValueError:
-        print("ID invalido. Debe ingresar un numero.")
+        print(error("ID invalido. Debe ingresar un numero."))
         return
 
     cliente = buscar_cliente_id(id_cliente)
     
     if not cliente:
-        print("Cliente no encontrado.")
+        print(error("Cliente no encontrado."))
     else:
         cliente["activo"] = False
         guardar_clientes()
-        print(f"Cliente {cliente['nombre']} {cliente['apellido']} dado de baja.")
+        print(correcto(f"Cliente {cliente['nombre']} {cliente['apellido']} dado de baja."))
 
 
 
 def buscar_clientes():
     if len(clientes) == 0:
-        print("\nNo hay clientes registrados.")
+        print(aviso("\nNo hay clientes registrados."))
         return
     
     termino = input("\nIngrese nombre, apellido o DNI a buscar: ").lower()
@@ -189,9 +187,9 @@ def buscar_clientes():
             resultados.append(c)
     
     if len(resultados) == 0:
-        print("No se encontraron clientes.")
+        print(aviso("No se encontraron clientes."))
     else:
-        print(f"\n--- RESULTADOS ({len(resultados)}) ---")
+        print(titulo(f"\n--- RESULTADOS ({len(resultados)}) ---"))
         for c in resultados:
             estado = "Activo" if c["activo"] else "Inactivo"
             print(f"ID: {c['id']} | {c['nombre']} {c['apellido']} | DNI: {c['dni']} | {estado}")

@@ -1,20 +1,18 @@
-# empleados.py
-
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
 from persistencia import cargar_datos, guardar_datos
+from colores import aviso, correcto, error, titulo
 
-# Lista de diccionarios para guardar empleados
+# Cargamos la lista desde json y si no hay datos arranca vacia
 empleados = cargar_datos("empleados.json", [])
 
 
 def guardar_empleados():
+    # Guardamos cada vez que cambia la lista para no perder los datos
     guardar_datos("empleados.json", empleados)
 
 
 def crear_empleado():
-    # Alta de empleado
-
-    print("\n--- ALTA DE EMPLEADO ---")
+    print(titulo("\n--- ALTA DE EMPLEADO ---"))
     
     empleado = {}
     empleado["id"] = len(empleados) + 1
@@ -26,20 +24,21 @@ def crear_empleado():
     empleado["apellido"] = formatear_nombre(apellido)
     
     dni = input("DNI (8 digitos): ")
+    # Validamos con while para que no avance hasta que este bien escrito
     while not validar_dni(dni):
-        print("DNI invalido. Debe tener 8 digitos.")
+        print(error("DNI invalido. Debe tener 8 digitos."))
         dni = input("DNI (8 digitos): ")
     empleado["dni"] = dni
     
     email = input("Email: ")
     while not validar_email(email):
-        print("Email invalido.")
+        print(error("Email invalido."))
         email = input("Email: ")
     empleado["email"] = email.lower()
     
     telefono = input("Telefono (ej: 11 1234 5678): ")
     while not validar_telefono(telefono):
-        print("Telefono invalido.")
+        print(error("Telefono invalido."))
         telefono = input("Telefono (ej: 11 1234 5678): ")
     empleado["telefono"] = telefono
     
@@ -50,11 +49,11 @@ def crear_empleado():
     
     empleados.append(empleado)
     guardar_empleados()
-    print(f"\n Empleado {empleado['nombre']} {empleado['apellido']} registrado. ID: {empleado['id']}")
+    print(correcto(f"\n Empleado {empleado['nombre']} {empleado['apellido']} registrado. ID: {empleado['id']}"))
 
 
 def buscar_empleado_id(id_empleado):
-    # Busca un empleado por su ID usando un bucle for
+    # Recorremos la lista y devolvemos el empleado que tenga ese id
     for empleado in empleados:
         if empleado["id"] == id_empleado:
             return empleado
@@ -62,49 +61,48 @@ def buscar_empleado_id(id_empleado):
 
 
 def listar_empleados():
-    # Lista todos los empleados activos
-    # Filter con lambda para obtener solo activos
+    # Filtramos solo los empleados que siguen activos
     activos = list(filter(lambda e: e["activo"], empleados))
     
     if len(activos) == 0:
-        print("\nNo hay empleados activos.")
+        print(aviso("\nNo hay empleados activos."))
         return
     
-    print("\n--- EMPLEADOS ACTIVOS ---")
+    print(titulo("\n--- EMPLEADOS ACTIVOS ---"))
     for empleado in activos:
         print(f"ID: {empleado['id']} | {empleado['nombre']} {empleado['apellido']} | Cargo: {empleado['cargo']} | Tel: {empleado['telefono']}")
 
 
 def modificar_empleado():
     if len(empleados) == 0:
-        print("\nNo hay empleados registrados.")
+        print(aviso("\nNo hay empleados registrados."))
         return
     
     try:
         id_empleado = int(input("\nID del empleado a modificar: "))
     except ValueError:
-        print("ID invalido. Debe ingresar un numero.")
+        print(error("ID invalido. Debe ingresar un numero."))
         return
 
     empleado = buscar_empleado_id(id_empleado)
     
     if not empleado:
-        print("Empleado no encontrado.")
+        print(error("Empleado no encontrado."))
         return
     
-    # Verificar si está inactivo y preguntar si quiere reactivar
+    # Si esta inactivo preguntamos si lo quiere reactivar
     if not empleado["activo"]:
-        print(f"\nEl empleado {empleado['nombre']} {empleado['apellido']} esta INACTIVO.")
+        print(aviso(f"\nEl empleado {empleado['nombre']} {empleado['apellido']} esta INACTIVO."))
         respuesta = input("Desea reactivarlo para modificarlo? (s/n): ").lower()
         if respuesta == "s":
             empleado["activo"] = True
-            print("Empleado reactivado.")
+            print(correcto("Empleado reactivado."))
         else:
-            print("No se puede modificar un empleado inactivo.")
+            print(aviso("No se puede modificar un empleado inactivo."))
             return
         
     while True:
-        print(f"\n--- MODIFICANDO: {empleado['nombre']} {empleado['apellido']} ---")
+        print(titulo(f"\n--- MODIFICANDO: {empleado['nombre']} {empleado['apellido']} ---"))
         print("1. Modificar nombre")
         print("2. Modificar apellido")
         print("3. Modificar email")
@@ -118,73 +116,73 @@ def modificar_empleado():
             nuevo = input(f"Nuevo nombre [{empleado['nombre']}]: ")
             if nuevo != "":
                 empleado["nombre"] = formatear_nombre(nuevo)
-                print("Nombre actualizado.")
+                print(correcto("Nombre actualizado."))
                 
         elif opcion == "2":
             nuevo = input(f"Nuevo apellido [{empleado['apellido']}]: ")
             if nuevo != "":
                 empleado["apellido"] = formatear_nombre(nuevo)
-                print("Apellido actualizado.")
+                print(correcto("Apellido actualizado."))
                 
         elif opcion == "3":
             nuevo = input(f"Nuevo email [{empleado['email']}]: ")
             if nuevo != "":
                 while not validar_email(nuevo):
-                    print("Email invalido.")
+                    print(error("Email invalido."))
                     nuevo = input(f"Nuevo email [{empleado['email']}]: ")
                 empleado["email"] = nuevo.lower()
-                print("Email actualizado.")
+                print(correcto("Email actualizado."))
                 
         elif opcion == "4":
             nuevo = input(f"Nuevo telefono [{empleado['telefono']}]: ")
             if nuevo != "":
                 while not validar_telefono(nuevo):
-                    print("Telefono invalido.")
+                    print(error("Telefono invalido."))
                     nuevo = input(f"Nuevo telefono [{empleado['telefono']}]: ")
                 empleado["telefono"] = nuevo
-                print("Telefono actualizado.")
+                print(correcto("Telefono actualizado."))
                 
         elif opcion == "5":
             nuevo = input(f"Nuevo cargo [{empleado['cargo']}]: ")
             if nuevo != "":
                 empleado["cargo"] = formatear_nombre(nuevo)
-                print("Cargo actualizado.")
+                print(correcto("Cargo actualizado."))
                 
         elif opcion == "0":
             guardar_empleados()
-            print("Cambios guardados.")
+            print(correcto("Cambios guardados."))
             return
             
         else:
-            print("Opcion invalida.")
+            print(error("Opcion invalida."))
 
 
 def baja_empleado():
-    # Baja de empleado (no se elimina, se marca como inactivo)
+    # No borramos el registro solo lo marcamos como inactivo
     if len(empleados) == 0:
-        print("\nNo hay empleados registrados.")
+        print(aviso("\nNo hay empleados registrados."))
         return
     
     try:
         id_empleado = int(input("\nID del empleado a dar de baja: "))
     except ValueError:
-        print("ID invalido. Debe ingresar un numero.")
+        print(error("ID invalido. Debe ingresar un numero."))
         return
 
     empleado = buscar_empleado_id(id_empleado)
     
     if not empleado:
-        print("Empleado no encontrado.")
+        print(error("Empleado no encontrado."))
     else:
         empleado["activo"] = False
         guardar_empleados()
-        print(f"Empleado {empleado['nombre']} {empleado['apellido']} dado de baja.")
+        print(correcto(f"Empleado {empleado['nombre']} {empleado['apellido']} dado de baja."))
 
 
 def buscar_empleados():
     # Busca empleados por nombre, apellido o DNI 
     if len(empleados) == 0:
-        print("\nNo hay empleados registrados.")
+        print(aviso("\nNo hay empleados registrados."))
         return
     
     termino = input("\nIngrese nombre, apellido o DNI a buscar: ").lower()
@@ -199,9 +197,9 @@ def buscar_empleados():
             resultados.append(e)
     
     if len(resultados) == 0:
-        print("No se encontraron empleados.")
+        print(aviso("No se encontraron empleados."))
     else:
-        print(f"\n--- RESULTADOS ({len(resultados)}) ---")
+        print(titulo(f"\n--- RESULTADOS ({len(resultados)}) ---"))
         for e in resultados:
             estado = "Activo" if e["activo"] else "Inactivo"
             print(f"ID: {e['id']} | {e['nombre']} {e['apellido']} | Cargo: {e['cargo']} | DNI: {e['dni']} | {estado}")

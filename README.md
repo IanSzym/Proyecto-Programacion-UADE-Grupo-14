@@ -13,6 +13,12 @@ El codigo oficial esta dentro de la carpeta `proyectoprogra1`.
 
 ## Como Ejecutar
 
+Si hace falta instalar la libreria para colores:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
 ```bash
 cd proyectoprogra1
 python main.py
@@ -27,6 +33,7 @@ python main.py
 - Gestion de promociones.
 - Calculadora corporal.
 - Guardado de datos en archivos JSON.
+- Colores en mensajes importantes de la consola.
 
 ## Estructura
 
@@ -64,6 +71,17 @@ lucas   - garcia123
 Los datos se guardan en archivos JSON dentro de `proyectoprogra1/data`.
 
 Esto permite que clientes, empleados, productos, promociones y usuarios sigan disponibles despues de cerrar el programa.
+
+## Colores en Consola
+
+El proyecto usa `colorama` para que algunos mensajes salgan con color.
+
+- Verde para acciones correctas.
+- Rojo para errores.
+- Amarillo para avisos.
+- Cyan para titulos.
+
+Si `colorama` no esta instalada, el programa igual funciona, solo que sin colores.
 
 ## Backup
 

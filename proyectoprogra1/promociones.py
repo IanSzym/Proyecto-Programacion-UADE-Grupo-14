@@ -1,26 +1,28 @@
-# promociones.py
-
 from valids import formatear_nombre
 from persistencia import cargar_datos, guardar_datos
+from colores import aviso, correcto, error, titulo
 
+# Cargamos la lista desde json y si no hay datos arranca vacia
 promociones = cargar_datos("promociones.json", [])
 
 
 def guardar_promociones():
+    # Guardamos cada vez que cambia la lista para no perder los datos
     guardar_datos("promociones.json", promociones)
 
 
 def crear_promocion():
-    print("\n--- ALTA DE PROMOCION ---")
+    print(titulo("\n--- ALTA DE PROMOCION ---"))
 
     promocion = {}
     promocion["id"] = len(promociones) + 1
     nombre = input("Nombre promocion: ")
     promocion["nombre"] = formatear_nombre(nombre)
+    # Usamos try porque el descuento tiene que ser un numero
     try:
         descuento = float(input("Descuento (%): "))
     except ValueError:
-        print("Descuento invalido.")
+        print(error("Descuento invalido."))
         return
 
     promocion["descuento"] = descuento
@@ -28,11 +30,12 @@ def crear_promocion():
 
     promociones.append(promocion)
     guardar_promociones()
-    print("Promocion registrada.")
+    print(correcto("Promocion registrada."))
 
 
 def buscar_promocion_id(id_promocion):
 
+    # Recorremos la lista y devolvemos la promocion que tenga ese id
     for promocion in promociones:
         if promocion["id"] == id_promocion:
             return promocion
@@ -41,12 +44,13 @@ def buscar_promocion_id(id_promocion):
 
 def listar_promociones():
 
+    # Filtramos solo las promociones que siguen activas
     activas = list(filter(lambda p: p["activa"], promociones))
 
     if len(activas) == 0:
-        print("\nNo hay promociones activas.")
+        print(aviso("\nNo hay promociones activas."))
         return
-    print("\n--- PROMOCIONES ACTIVAS ---")
+    print(titulo("\n--- PROMOCIONES ACTIVAS ---"))
     for promocion in activas:
         print(
             f"ID: {promocion['id']} | "
@@ -60,13 +64,14 @@ def modificar_promocion():
     try:
         id_promocion = int(input("ID promocion: "))
     except ValueError:
-        print("ID invalido.")
+        print(error("ID invalido."))
         return
     promocion = buscar_promocion_id(id_promocion)
     if not promocion:
-        print("Promocion no encontrada.")
+        print(error("Promocion no encontrada."))
         return
     
+    # Esta variable sirve para saber si hay algo para guardar o no
     hubo_cambios = False
 
     nuevo_nombre = input("Nuevo nombre: ")
@@ -80,13 +85,13 @@ def modificar_promocion():
             promocion["descuento"] = float(nuevo_descuento)
             hubo_cambios = True
         except ValueError:
-            print("Descuento invalido.")
+            print(error("Descuento invalido."))
 
     if hubo_cambios:
         guardar_promociones()
-        print("Promocion actualizada.")
+        print(correcto("Promocion actualizada."))
     else:
-        print("No se realizaron cambios.")
+        print(aviso("No se realizaron cambios."))
 
 
 def baja_promocion():
@@ -94,15 +99,16 @@ def baja_promocion():
     try:
         id_promocion = int(input("ID promocion: "))
     except ValueError:
-        print("ID invalido.")
+        print(error("ID invalido."))
         return
     promocion = buscar_promocion_id(id_promocion)
     if not promocion:
-        print("Promocion no encontrada.")
+        print(error("Promocion no encontrada."))
         return
+    # No borramos el registro solo lo marcamos como inactivo
     promocion["activa"] = False
     guardar_promociones()
-    print("Promocion dada de baja.")
+    print(correcto("Promocion dada de baja."))
 
 
 def buscar_promociones():
@@ -113,7 +119,7 @@ def buscar_promociones():
         if termino in promocion["nombre"].lower():
             resultados.append(promocion)
     if len(resultados) == 0:
-        print("No se encontraron promociones.")
+        print(aviso("No se encontraron promociones."))
     else:
         for promocion in resultados:
             estado = (

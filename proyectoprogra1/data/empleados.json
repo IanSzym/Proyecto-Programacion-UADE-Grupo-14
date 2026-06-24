@@ -1,1 +1,22 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "Carlos",
+        "apellido": "Carlosera",
+        "dni": "47061432",
+        "email": "carlos@carlos.carlos",
+        "telefono": "123423525",
+        "cargo": "Gerente",
+        "activo": true
+    },
+    {
+        "id": 2,
+        "nombre": "C",
+        "apellido": "",
+        "dni": "24562456",
+        "email": "wefwe@fsef.com",
+        "telefono": "235353656",
+        "cargo": "325Aergwt",
+        "activo": true
+    }
+]

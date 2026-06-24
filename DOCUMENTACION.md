@@ -34,6 +34,7 @@ Proyecto Programacion UADE Grupo 14
     ├── productos.py
     ├── promociones.py
     ├── calculadora.py
+    ├── colores.py
     ├── valids.py
     ├── persistencia.py
     └── data
@@ -47,6 +48,10 @@ Proyecto Programacion UADE Grupo 14
 ## Como Ejecutar el Programa
 
 Desde la terminal:
+
+```bash
+python -m pip install -r requirements.txt
+```
 
 ```bash
 cd proyectoprogra1
@@ -114,6 +119,37 @@ Funciones:
 - `validar_telefono(telefono)`: verifica un formato de telefono valido.
 - `validar_email(email)`: verifica que el email tenga un formato correcto.
 - `formatear_nombre(nombre)`: convierte nombres a formato titulo.
+
+### `colores.py`
+
+Este archivo lo agregamos para que la consola sea mas facil de leer.
+
+Antes todos los mensajes salian iguales y era medio incomodo distinguir si algo habia salido bien, si era un error o si era solo un aviso. Por eso usamos colores en algunos textos importantes.
+
+Usamos la libreria `colorama`, que sirve para mostrar colores en la terminal. Igual dejamos el archivo preparado para que si `colorama` no esta instalada, el programa siga funcionando sin romperse.
+
+Para instalarla se puede usar:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Funciones:
+- `titulo(texto)`: se usa para titulos de menus y secciones.
+- `correcto(texto)`: se usa para mensajes de exito, por ejemplo cuando algo se guarda.
+- `error(texto)`: se usa cuando hay datos invalidos o una opcion incorrecta.
+- `aviso(texto)`: se usa para advertencias o mensajes informativos.
+
+Ejemplo:
+
+```python
+print(correcto("Cliente registrado"))
+print(error("Opcion invalida"))
+print(aviso("No hay productos activos"))
+print(titulo("GESTION DE CLIENTES"))
+```
+
+No le pusimos color a todo porque si no se vuelve confuso. La idea fue usarlo solo donde ayuda a entender mejor lo que esta pasando.
 
 ## Gestion de Clientes
 
@@ -318,6 +354,7 @@ Esa carpeta sirve como respaldo. El codigo oficial actual esta en `proyectoprogr
 - Gestion de promociones.
 - Calculadora corporal.
 - Persistencia de datos con JSON.
+- Colores en los mensajes principales de la consola.
 - Menus por consola.
 - Validaciones basicas de datos.
 

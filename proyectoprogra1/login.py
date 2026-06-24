@@ -1,7 +1,9 @@
 
 from persistencia import cargar_datos
+from colores import aviso, correcto, error, titulo
 
 
+# Estos usuarios se usan si el archivo usuarios json todavia no existe
 usuarios_iniciales = {
     "admin": "admin123",
     "ignacio": "pita123",
@@ -10,12 +12,12 @@ usuarios_iniciales = {
     "lucas": "garcia123"
 }
 
+# Cargamos las credenciales desde json para que no queden solo en memoria
 CREDENCIALES = cargar_datos("usuarios.json", usuarios_iniciales)
 
 
 def login(usuario, password):
-    #Valida usuario y contraseña.
-    #Retorna True si son correctos, False si no.
+    # Primero revisamos que exista el usuario y despues que la clave coincida
     if usuario in CREDENCIALES:
         if CREDENCIALES[usuario] == password:
             return True
@@ -24,9 +26,9 @@ def login(usuario, password):
 
 def iniciar_sesion():
     print("=" * 40)
-    print("INICIO DE SESION")
+    print(titulo("INICIO DE SESION"))
     print("=" * 40)
-    print("(Ingrese -1 como usuario para salir)")
+    print(aviso("(Ingrese -1 como usuario para salir)"))
     print()
     
     usuario = input("Usuario: ")
@@ -35,13 +37,13 @@ def iniciar_sesion():
         password = input("Contraseña: ")
         
         if login(usuario, password):
-            print(f"\nBienvenido {usuario}")
+            print(correcto(f"\nBienvenido {usuario}"))
             return True
         else:
-            print("Usuario o contraseña incorrectos.")
+            print(error("Usuario o contraseña incorrectos."))
             print()
-            print("(Ingrese -1 como usuario para salir)")
+            print(aviso("(Ingrese -1 como usuario para salir)"))
             usuario = input("Usuario: ")
     
-    print("\nSaliendo del sistema...")
+    print(aviso("\nSaliendo del sistema..."))
     return False

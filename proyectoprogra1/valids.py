@@ -2,6 +2,7 @@ import re
 
 def validar_dni(dni):
     try:
+        # Usamos expresiones regulares para revisar el formato del dato
         patron = '^[0-9]{8}$'
         return re.match(patron, str(dni))
     except TypeError:
@@ -23,6 +24,7 @@ def validar_email(email):
 
 def formatear_nombre(nombre):
     try:
+        # Con title dejamos nombres y apellidos con mayuscula inicial
         return str(nombre).title()
     except TypeError:
         return ""
