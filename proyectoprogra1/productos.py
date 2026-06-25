@@ -22,23 +22,29 @@ def crear_producto():
     producto["nombre"] = formatear_nombre(nombre)
 
     # Usamos try porque el precio tiene que ser un numero
-    try:
-        precio = float(input("Precio: "))
-    except ValueError:
-        print(error("Precio invalido."))
-        return
-
-    producto["precio"] = precio
+    while True:
+        try:
+            precio = float(input("Precio: "))
+            if precio < 0:
+                print(error("El precio no puede ser negativo."))
+            else:
+                producto["precio"] = precio
+                break
+        except ValueError:
+            print(error("Precio invalido. Ingrese un numero."))
 
     # Usamos try porque el stock tiene que ser un numero entero
-    try:
-        stock = int(input("Stock: "))
-    except ValueError:
-        print(error("Stock invalido."))
-        return
-
-    producto["stock"] = stock
-    producto["activo"] = True
+    while True:
+        try:
+            stock = int(input("Stock: "))
+            if stock < 0:
+                print(error("El stock no puede ser negativo."))
+            else:
+                producto["stock"] = stock
+                producto["activo"] = True
+                break
+        except ValueError:
+            print(error("Stock invalido. Ingrese un numero."))
 
     productos.append(producto)
     guardar_productos()
@@ -110,17 +116,31 @@ def modificar_producto():
 
         elif opcion == "2":
 
-            try:
-                producto["precio"] = float(input("Nuevo precio: "))
-            except ValueError:
-                print(error("Precio invalido."))
-
+            while True:
+                try:
+                    nuevo = float(input("Nuevo precio: "))
+                    if nuevo < 0:
+                        print(error("El precio no puede ser negativo."))
+                    else:
+                        producto["precio"] = nuevo
+                        print(correcto("Precio actualizado."))
+                        break
+                except ValueError:
+                    print(error("Precio invalido."))   
+    
         elif opcion == "3":
 
-            try:
-                producto["stock"] = int(input("Nuevo stock: "))
-            except ValueError:
-                print(error("Stock invalido."))
+            while True:
+                try:
+                    nuevo = int(input("Nuevo stock: "))
+                    if nuevo < 0:
+                        print(error("El stock no puede ser negativo."))
+                    else:
+                        producto["stock"] = nuevo
+                        print(correcto("Stock actualizado."))
+                        break
+                except ValueError:
+                    print(error("Stock invalido."))
 
         elif opcion == "0":
             guardar_productos()
@@ -180,5 +200,6 @@ def buscar_productos():
                 f"ID: {producto['id']} | "
                 f"{producto['nombre']} | "
                 f"${producto['precio']} | "
+                f"Stock: {producto['stock']} | "
                 f"{estado}"
             )

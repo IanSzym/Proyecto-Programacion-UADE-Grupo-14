@@ -19,14 +19,17 @@ def crear_promocion():
     nombre = input("Nombre promocion: ")
     promocion["nombre"] = formatear_nombre(nombre)
     # Usamos try porque el descuento tiene que ser un numero
-    try:
-        descuento = float(input("Descuento (%): "))
-    except ValueError:
-        print(error("Descuento invalido."))
-        return
-
-    promocion["descuento"] = descuento
-    promocion["activa"] = True
+    while True:
+        try:
+            descuento = float(input("Descuento (%): "))
+            if descuento < 0 or descuento > 100:
+                print(error("El descuento debe estar entre 0 y 100."))
+            else:
+                promocion["descuento"] = descuento
+                promocion["activa"] = True
+                break 
+        except ValueError:
+            print(error("Descuento invalido."))
 
     promociones.append(promocion)
     guardar_promociones()
@@ -82,10 +85,15 @@ def modificar_promocion():
     nuevo_descuento = input("Nuevo descuento: ")
     if nuevo_descuento != "":
         try:
-            promocion["descuento"] = float(nuevo_descuento)
-            hubo_cambios = True
+            nuevo = float(nuevo_descuento)
+            if nuevo < 0 or nuevo > 100:
+                print(error("El descuento debe estar entre 0 y 100."))
+            else:
+                promocion["descuento"] = nuevo
+                hubo_cambios = True
         except ValueError:
             print(error("Descuento invalido."))
+
 
     if hubo_cambios:
         guardar_promociones()

@@ -32,20 +32,20 @@ def obtener_int(mensaje, opciones_validas):
 def calcular_imc(peso, altura):
     """Calcula el Índice de Masa Corporal."""
     # Formula del imc peso dividido altura al cuadrado
-    return peso / (altura ** 2)
+    return (peso / (altura ** 2))
 
 
 def clasificar_imc(imc):
     """Devuelve la categoría del IMC y una descripción."""
     # Segun el valor del imc devolvemos una categoria distinta
     if imc < 18.5:
-        return "Bajo peso", "Estas por debajo del peso saludable."
+        return ("Bajo peso", "Estas por debajo del peso saludable.")
     elif imc < 25:
-        return "Peso normal", "Estas en un rango de peso saludable."
+        return ("Peso normal", "Estas en un rango de peso saludable.")
     elif imc < 30:
-        return "Sobrepeso", "Estas por encima del peso saludable."
+        return ("Sobrepeso", "Estas por encima del peso saludable.")
     else:
-        return "Obesidad", "Se recomienda consultar con un profesional de salud."
+        return ("Obesidad", "Se recomienda consultar con un profesional de salud.")
 
 
 def calcular_proteinas(peso, objetivo):

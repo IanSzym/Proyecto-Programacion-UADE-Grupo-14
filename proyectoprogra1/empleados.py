@@ -28,8 +28,17 @@ def crear_empleado():
     while not validar_dni(dni):
         print(error("DNI invalido. Debe tener 8 digitos."))
         dni = input("DNI (8 digitos): ")
+    #Conjuntos, verifica que el DNI no este ya registrado
+    dnis_registrados = {e["dni"] for e in empleados}  # ← SET
+    while dni in dnis_registrados:
+        print(error("Ya existe un empleado con ese DNI."))
+        dni = input("DNI (8 digitos): ")
+        while not validar_dni(dni):
+            print(error("DNI invalido. Debe tener 8 digitos."))
+            dni = input("DNI (8 digitos): ")
     empleado["dni"] = dni
-    
+
+
     email = input("Email: ")
     while not validar_email(email):
         print(error("Email invalido."))
@@ -52,12 +61,17 @@ def crear_empleado():
     print(correcto(f"\n Empleado {empleado['nombre']} {empleado['apellido']} registrado. ID: {empleado['id']}"))
 
 
-def buscar_empleado_id(id_empleado):
-    # Recorremos la lista y devolvemos el empleado que tenga ese id
-    for empleado in empleados:
-        if empleado["id"] == id_empleado:
-            return empleado
-    return False
+def buscar_empleado_id(lista, id_empleado, inicio, fin):
+    # Búsqueda binaria recursiva por ID
+    if inicio > fin:
+        return False
+    medio = (inicio + fin) // 2
+    if lista[medio]["id"] == id_empleado:
+        return lista[medio]
+    elif id_empleado < lista[medio]["id"]:
+        return buscar_empleado_id(lista, id_empleado, inicio, medio - 1)
+    else:
+        return buscar_empleado_id(lista, id_empleado, medio + 1, fin)
 
 
 def listar_empleados():
@@ -71,7 +85,7 @@ def listar_empleados():
     print(titulo("\n--- EMPLEADOS ACTIVOS ---"))
     for empleado in activos:
         print(f"ID: {empleado['id']} | {empleado['nombre']} {empleado['apellido']} | Cargo: {empleado['cargo']} | Tel: {empleado['telefono']}")
-
+    print(f"Total activos: {len(activos)}")
 
 def modificar_empleado():
     if len(empleados) == 0:
@@ -84,7 +98,7 @@ def modificar_empleado():
         print(error("ID invalido. Debe ingresar un numero."))
         return
 
-    empleado = buscar_empleado_id(id_empleado)
+    empleado = buscar_empleado_id(empleados, id_empleado, 0, len(empleados) - 1)
     
     if not empleado:
         print(error("Empleado no encontrado."))
@@ -169,7 +183,7 @@ def baja_empleado():
         print(error("ID invalido. Debe ingresar un numero."))
         return
 
-    empleado = buscar_empleado_id(id_empleado)
+    empleado = buscar_empleado_id(empleados, id_empleado, 0, len(empleados) - 1)
     
     if not empleado:
         print(error("Empleado no encontrado."))

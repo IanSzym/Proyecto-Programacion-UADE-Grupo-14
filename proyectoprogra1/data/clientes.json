@@ -1,1 +1,11 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "Nahuel",
+        "apellido": "Villasenin",
+        "dni": "87345678",
+        "email": "hgifurn@gi.com",
+        "telefono": "9876543246",
+        "activo": true
+    }
+]

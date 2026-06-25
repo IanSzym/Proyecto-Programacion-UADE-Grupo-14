@@ -18,5 +18,15 @@
         "telefono": "235353656",
         "cargo": "325Aergwt",
         "activo": true
+    },
+    {
+        "id": 3,
+        "nombre": "Werg",
+        "apellido": "We",
+        "dni": "23456566",
+        "email": "3gr@bhdr.com",
+        "telefono": "245765432",
+        "cargo": "Jefe",
+        "activo": true
     }
 ]
