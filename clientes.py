@@ -1,9 +1,11 @@
 # clientes.py
 
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
+from archivosJson import guardar, cargar
 
 # Lista de diccionarios para guardar clientes 
-clientes = []
+clientes = cargar("clientes")
+print(f"{len(clientes)} clientes cargados.")
 
 
 def crear_cliente():
@@ -23,6 +25,14 @@ def crear_cliente():
     while not validar_dni(dni):
         print("DNI invalido. Debe tener 8 digitos.")
         dni = input("DNI (8 digitos): ")
+    dnis_registrados = {c["dni"] for c in clientes}
+    #Conjuntos, verifica que el DNI no este ya registrado
+    while dni in dnis_registrados:
+        print("Ya existe un cliente con ese DNI.")
+        dni = input("DNI (8 digitos): ")
+        while not validar_dni(dni):
+            print("DNI invalido. Debe tener 8 digitos.")
+            dni = input("DNI (8 digitos): ")
     cliente["dni"] = dni
     
     email = input("Email: ")
@@ -41,14 +51,20 @@ def crear_cliente():
     
     clientes.append(cliente)
     print(f"\n Cliente {cliente['nombre']} {cliente['apellido']} registrado. ID: {cliente['id']}")
+    guardar("clientes", clientes)
 
 
-def buscar_cliente_id(id_cliente):
-    #Busca un cliente por su ID usando un bucle for 
-    for cliente in clientes:
-        if cliente["id"] == id_cliente:
-            return cliente
-    return False
+def buscar_cliente_id(lista, id_cliente, inicio, fin):
+    """Búsqueda binaria recursiva por ID. Caso base: rango vacío."""
+    if inicio > fin:
+        return False
+    medio = (inicio + fin) // 2
+    if lista[medio]["id"] == id_cliente:
+        return lista[medio]
+    elif id_cliente < lista[medio]["id"]:
+        return buscar_cliente_id(lista, id_cliente, inicio, medio - 1)
+    else:
+        return buscar_cliente_id(lista, id_cliente, medio + 1, fin)
 
 
 def listar_clientes():
@@ -63,6 +79,7 @@ def listar_clientes():
     print("\n--- CLIENTES ACTIVOS ---")
     for cliente in activos:
         print(f"ID: {cliente['id']} | {cliente['nombre']} {cliente['apellido']} | DNI: {cliente['dni']} | Tel: {cliente['telefono']}")
+    print(f"Total activos: {len(activos)}")
 
 
 def modificar_cliente():
@@ -76,8 +93,8 @@ def modificar_cliente():
         print("ID invalido. Debe ingresar un numero.")
         return
 
-    cliente = buscar_cliente_id(id_cliente)
-    
+    cliente = buscar_cliente_id(clientes, id_cliente, 0, len(clientes) - 1)
+
     if not cliente:
         print("Cliente no encontrado.")
         return
@@ -135,6 +152,7 @@ def modificar_cliente():
                 
         elif opcion == "0":
             print("Cambios guardados.")
+            guardar("clientes", clientes)
             return
             
         else:
@@ -153,13 +171,14 @@ def baja_cliente():
         print("ID invalido. Debe ingresar un numero.")
         return
 
-    cliente = buscar_cliente_id(id_cliente)
+    cliente = buscar_cliente_id(clientes, id_cliente, 0, len(clientes) - 1)
     
     if not cliente:
         print("Cliente no encontrado.")
     else:
         cliente["activo"] = False
         print(f"Cliente {cliente['nombre']} {cliente['apellido']} dado de baja.")
+        guardar("clientes", clientes)
 
 
 

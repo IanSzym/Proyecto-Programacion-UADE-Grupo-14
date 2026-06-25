@@ -1,9 +1,11 @@
 # empleados.py
 
 from valids import validar_dni, validar_telefono, validar_email, formatear_nombre
+from archivosJson import guardar, cargar
 
 # Lista de diccionarios para guardar empleados
-empleados = []
+empleados = cargar("empleados")
+print(f"{len(empleados)} empleados cargados.")
 
 
 def crear_empleado():
@@ -24,6 +26,14 @@ def crear_empleado():
     while not validar_dni(dni):
         print("DNI invalido. Debe tener 8 digitos.")
         dni = input("DNI (8 digitos): ")
+    #Conjuntos, verifica que el DNI no este ya registrado
+    dnis_registrados = {e["dni"] for e in empleados}
+    while dni in dnis_registrados:
+        print("Ya existe un empleado con ese DNI.")
+        dni = input("DNI (8 digitos): ")
+        while not validar_dni(dni):
+            print("DNI invalido. Debe tener 8 digitos.")
+            dni = input("DNI (8 digitos): ")
     empleado["dni"] = dni
     
     email = input("Email: ")
@@ -45,14 +55,20 @@ def crear_empleado():
     
     empleados.append(empleado)
     print(f"\n Empleado {empleado['nombre']} {empleado['apellido']} registrado. ID: {empleado['id']}")
+    guardar("empleados", empleados)
 
 
-def buscar_empleado_id(id_empleado):
-    # Busca un empleado por su ID usando un bucle for
-    for empleado in empleados:
-        if empleado["id"] == id_empleado:
-            return empleado
-    return False
+def buscar_empleado_id(lista, id_empleado, inicio, fin):
+    # Búsqueda binaria recursiva por ID. Caso base: rango vacío.
+    if inicio > fin:
+        return False
+    medio = (inicio + fin) // 2
+    if lista[medio]["id"] == id_empleado:
+        return lista[medio]
+    elif id_empleado < lista[medio]["id"]:
+        return buscar_empleado_id(lista, id_empleado, inicio, medio - 1)
+    else:
+        return buscar_empleado_id(lista, id_empleado, medio + 1, fin)
 
 
 def listar_empleados():
@@ -80,7 +96,7 @@ def modificar_empleado():
         print("ID invalido. Debe ingresar un numero.")
         return
 
-    empleado = buscar_empleado_id(id_empleado)
+    empleado = buscar_empleado_id(empleados, id_empleado, 0, len(empleados) - 1)
     
     if not empleado:
         print("Empleado no encontrado.")
@@ -146,6 +162,7 @@ def modificar_empleado():
                 
         elif opcion == "0":
             print("Cambios guardados.")
+            guardar("empleados", empleados)
             return
             
         else:
@@ -164,13 +181,14 @@ def baja_empleado():
         print("ID invalido. Debe ingresar un numero.")
         return
 
-    empleado = buscar_empleado_id(id_empleado)
+    empleado = buscar_empleado_id(empleados, id_empleado, 0, len(empleados) - 1)
     
     if not empleado:
         print("Empleado no encontrado.")
     else:
         empleado["activo"] = False
         print(f"Empleado {empleado['nombre']} {empleado['apellido']} dado de baja.")
+        guardar("empleados", empleados)
 
 
 def buscar_empleados():

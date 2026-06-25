@@ -1,8 +1,10 @@
 # promociones.py
 
 from valids import formatear_nombre
+from archivosJson import guardar, cargar
 
-promociones = []
+promociones = cargar("promociones")
+print(f"{len(promociones)} promociones cargadas.")
 
 
 def crear_promocion():
@@ -12,17 +14,23 @@ def crear_promocion():
     promocion["id"] = len(promociones) + 1
     nombre = input("Nombre promocion: ")
     promocion["nombre"] = formatear_nombre(nombre)
-    try:
-        descuento = float(input("Descuento (%): "))
-    except ValueError:
-        print("Descuento invalido.")
-        return
+    # En crear_promocion()
+    while True:
+        try:
+            descuento = float(input("Descuento (%): "))
+            if descuento < 0 or descuento > 100:
+                print("El descuento debe estar entre 0 y 100.")
+            else:
+                promocion["descuento"] = descuento
+                promocion["activa"] = True
+                break
+        except ValueError:
+            print("Descuento invalido.")
 
-    promocion["descuento"] = descuento
-    promocion["activa"] = True
 
     promociones.append(promocion)
     print("Promocion registrada.")
+    guardar("promociones", promociones)
 
 
 def buscar_promocion_id(id_promocion):
@@ -63,13 +71,19 @@ def modificar_promocion():
     nuevo_nombre = input("Nuevo nombre: ")
     if nuevo_nombre != "":
         promocion["nombre"] = formatear_nombre(nuevo_nombre)
-    try:
-        promocion["descuento"] = float(
-            input("Nuevo descuento: ")
-        )
-    except ValueError:
-        print("Descuento invalido.")
+    while True:
+        try:
+            nuevo_descuento = float(input("Nuevo descuento: "))
+            if nuevo_descuento < 0 or nuevo_descuento > 100:
+                print("El descuento debe estar entre 0 y 100.")
+            else:
+                promocion["descuento"] = nuevo_descuento
+                print("Descuento actualizado.")
+                break
+        except ValueError:
+            print("Descuento invalido.")
     print("Promocion actualizada.")
+    guardar("promociones", promociones)
 
 
 def baja_promocion():
@@ -85,6 +99,7 @@ def baja_promocion():
         return
     promocion["activa"] = False
     print("Promocion dada de baja.")
+    guardar("promociones", promociones)
 
 
 def buscar_promociones():

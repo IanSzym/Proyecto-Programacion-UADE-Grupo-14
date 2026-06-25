@@ -1,8 +1,10 @@
 # productos.py
 
 from valids import formatear_nombre
+from archivosJson import guardar, cargar
 
-productos = []
+productos = cargar("productos")
+print(f"{len(productos)} productos cargados.")
 
 
 def crear_producto():
@@ -15,26 +17,32 @@ def crear_producto():
     nombre = input("Nombre del producto: ")
     producto["nombre"] = formatear_nombre(nombre)
 
-    try:
-        precio = float(input("Precio: "))
-    except ValueError:
-        print("Precio invalido.")
-        return
+    while True:
+        try:
+            precio = float(input("Precio: "))
+            if precio < 0:
+                print("El precio no puede ser negativo.")
+            else:
+                producto["precio"] = precio
+                break
+        except ValueError:
+            print("Precio invalido. Ingrese un numero.")
 
-    producto["precio"] = precio
-
-    try:
-        stock = int(input("Stock: "))
-    except ValueError:
-        print("Stock invalido.")
-        return
-
-    producto["stock"] = stock
-    producto["activo"] = True
+    while True:
+        try:
+            stock = int(input("Stock: "))
+            if stock < 0:
+                print("El stock no puede ser negativo.")
+            else:
+                producto["stock"] = stock
+                producto["activo"] = True
+                break
+        except ValueError:
+            print("Stock invalido.")
 
     productos.append(producto)
-
     print(f"\nProducto {producto['nombre']} registrado.")
+    guardar("productos", productos)
     
 
 def buscar_producto_id(id_producto):
@@ -98,21 +106,34 @@ def modificar_producto():
                 producto["nombre"] = formatear_nombre(nuevo)
 
         elif opcion == "2":
-
-            try:
-                producto["precio"] = float(input("Nuevo precio: "))
-            except ValueError:
-                print("Precio invalido.")
+            while True:
+                try:
+                    nuevo = float(input("Nuevo precio: "))
+                    if nuevo < 0:
+                        print("El precio no puede ser negativo.")
+                    else:
+                        producto["precio"] = nuevo
+                        print("Precio actualizado.")
+                        break
+                except ValueError:
+                    print("Precio invalido.")
 
         elif opcion == "3":
-
-            try:
-                producto["stock"] = int(input("Nuevo stock: "))
-            except ValueError:
-                print("Stock invalido.")
+            while True:
+                try:
+                    nuevo = int(input("Nuevo stock: "))
+                    if nuevo < 0:
+                        print("El stock no puede ser negativo.")
+                    else:
+                        producto["stock"] = nuevo
+                        print("Stock actualizado.")
+                        break
+                except ValueError:
+                    print("Stock invalido.")
 
         elif opcion == "0":
             print("Cambios guardados.")
+            guardar("productos", productos)
             return
 
         else:
@@ -138,8 +159,8 @@ def baja_producto():
         return
 
     producto["activo"] = False
-
     print(f"Producto {producto['nombre']} dado de baja.")
+    guardar("productos", productos)
 
 
 def buscar_productos():
@@ -166,5 +187,6 @@ def buscar_productos():
                 f"ID: {producto['id']} | "
                 f"{producto['nombre']} | "
                 f"${producto['precio']} | "
+                f"Stock: {producto['stock']} | "
                 f"{estado}"
             )
